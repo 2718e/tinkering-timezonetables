@@ -11,3 +11,8 @@ Also want to make the app work without an internet connection (via service worke
 ### Status
 
 project is a work in progress and many things won't work.
+
+### Roadmap
+
+1) Understand how the bundler works so can allow the app to be cached for offline access
+2) Add interactivity - Allow the user to define what places they want to know about
