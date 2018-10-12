@@ -1,12 +1,11 @@
 <html>
-
 <head>
     <title>This is a web app</title>
 </head>
 
 <body>
-    <h2>This is a web app</h2>
-    <div>OMG!! :O</div>
+    <div id="react-mount-point"></div>
+
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker
@@ -14,7 +13,6 @@
                 .then(function () { console.log("Service Worker Registered"); });
         }
     </script>
-    
+    <script type="text/javascript" src="app.tsx"></script>
 </body>
-
 </html>
