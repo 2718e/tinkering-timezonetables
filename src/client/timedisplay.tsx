@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ILocationWithZone } from './stores/datatypes'
-import * as Helpers from '../shared/helpers'
+import * as Helpers from './helpers'
 
 interface ITimeDisplayProps {
     places: ILocationWithZone[]
@@ -9,7 +9,8 @@ interface ITimeDisplayProps {
 export const TimeDisplay = (props: ITimeDisplayProps) => {
     let result;
     if (props.places && props.places.length > 0) {
-        result = <table>
+        result = <>
+            <table>
             <thead>
                 <tr>
                     {props.places.map(place => <th key={place.location + "head"}>{place.location}</th>)}
@@ -25,6 +26,7 @@ export const TimeDisplay = (props: ITimeDisplayProps) => {
                 )}
             </tbody>
         </table>
+        </>
     } else {
         result = <div>Please select some places</div>
     }

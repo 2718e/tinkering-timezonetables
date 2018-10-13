@@ -1,28 +1,18 @@
-import * as express from 'express'
-import * as Path from 'path'
-import * as Bundler from 'parcel-bundler'
+const express = require('express')
+const webpack = require('webpack')
+const webpackDevMiddleware = require('webpack-dev-middleware')
 
-const port = 3184 // pick a non standard port since want to try out service workers (which can be scoped to url)
+const app = express()
+const config = require('../../webpack.config.js')
+const compiler = webpack(config)
 
-async function makeParcelBundler() {
-  const clientEntryPoint = Path.join(__dirname, '../client/index.html')
-  const options = {}
-  const bundler = new Bundler(clientEntryPoint, options)   
-  return bundler
-}
+// Tell express to use the webpack-dev-middleware and use the webpack.config.js
+// configuration file as a base.
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: config.output.publicPath
+}));
 
-async function start() {
-  const app = express()
-  const r = express.Router()
-  r.use(express.json())
-  
-  const bundler = await makeParcelBundler()
-  r.use('/',bundler.middleware())
-  app.use('/',r)
-
-  app.listen(port, () => {
-    console.log('app listening on port ' + port)
-  })
-}
-
-start()
+// Serve the files on port 3185.
+app.listen(3185, function () {
+  console.log('Example app listening on port 3185!\n');
+})
