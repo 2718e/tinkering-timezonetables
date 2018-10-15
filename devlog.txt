@@ -1,0 +1,13 @@
+How to allow user to select timezone.
+
+typing cumbersome on mobile but the list is quite big so maybe dont want a drop down with nearly 600 items
+
+maybe region then city? (split zone name on the / character, have a dropdown for region then city, city dropdown populated by filter on region.)
+
+_________________________
+
+for now just use the react select component
+
+need to have
+- prettier table
+- more user control over ordering (i.e. choosing what is the base zone)

@@ -1,4 +1,5 @@
-export interface ILocationWithZone {
-    location: string;
-    utcOffset: number;
+export interface ISplitTimezoneName {
+    placeName: string;
+    regionName: string;
+    fullZoneName: string;
 }

@@ -14,5 +14,7 @@ project is a work in progress and many things won't work.
 
 ### Roadmap
 
-1) How to get time zone data
-2) Add interactivity - Allow the user to define what places they want to know about
+Current todos
+
+1) Allow user to choose ordering of columns and which is the base timezone
+2) Make the table prettier
