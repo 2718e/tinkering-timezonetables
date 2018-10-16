@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { ISplitTimezoneName } from './stores/datatypes'
-import * as Helpers from './helpers'
+import { SplitTimezoneName } from '../../stores/datatypes'
 import * as moment from 'moment-timezone'
 import * as groupBy from 'lodash/groupBy'
 import * as keys from 'lodash/keys'
@@ -8,11 +7,11 @@ import * as minBy from 'lodash/minBy'
 import * as orderBy from 'lodash/orderBy'
 import * as range from 'lodash/range'
 
-interface ITimeDisplayProps {
-    places: ISplitTimezoneName[]
+type TimeDisplayProps = {
+    places: SplitTimezoneName[]
 }
 
-function prepareColumns(data: ISplitTimezoneName[]) {
+function prepareColumns(data: SplitTimezoneName[]) {
     const transformed = data.map((d, i) => {
         return {
             placeName: d.placeName,
@@ -37,7 +36,7 @@ function computeHoursColumn(offsetMins, baseOffset) {
     return range(0, 24).map(hour => (48 + hour + (offsetMins - baseOffset) / 60) % 24)
 }
 
-export class TimeDisplay extends React.Component<ITimeDisplayProps> {
+export class TimeDisplay extends React.Component<TimeDisplayProps> {
 
     private cache: { [key: number]: string[] } = {}
 
@@ -60,13 +59,13 @@ export class TimeDisplay extends React.Component<ITimeDisplayProps> {
                     <thead>
                         <tr>
                             {columns.map(col => <th key={col.offsetMins + "head"}>
-                                <div>Utc offset {col.offsetMins/60}</div>
-                                {col.names.map(name=> <div>{name}</div>)}
+                                <div key="utcOffset" >Utc offset {col.offsetMins/60}</div>
+                                {col.names.map(name=> <div key={name} >{name}</div>)}
                             </th>)}
                         </tr>
                     </thead>
                     <tbody>
-                        {Helpers.range(0, 24).map(hour => <tr key={"hour" + hour}>
+                        {range(0, 24).map(hour => <tr key={"hour" + hour}>
                             {columns.map(place => <td key={place.offsetMins + "hour" + hour}>
                                 {hourData[place.offsetMins-baseOffset][hour]}
                             </td>

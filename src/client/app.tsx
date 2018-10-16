@@ -1,7 +1,7 @@
 import * as React from 'react' // need to import * as React rather than import React otherwise parcel renames it - which then breaks when the jsx is transformed assuming the name is React
 import * as ReactDOM from 'react-dom'
 import { getTimezoneList, identity } from './helpers'
-import {Coordinator} from './coordinator'
+import { RootRCC } from './components/container/containercomponents'
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -13,11 +13,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-const AppRoot = () => <Coordinator />
-
 ReactDOM.render(
-    <AppRoot />,
+    <RootRCC />,
     document.getElementById('react-mount-point')
 );
-
-console.log(getTimezoneList())

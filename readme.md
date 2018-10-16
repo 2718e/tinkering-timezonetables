@@ -12,6 +12,13 @@ Also want to make the app work without an internet connection (via service worke
 
 project is a work in progress and many things won't work.
 
+### Naming conventions
+
+have adopted a few naming conventions for the code, these being
+
+- prefix types representing redux actions with "A"
+- suffix Redux Container Components with "RCC"
+
 ### Roadmap
 
 Current todos

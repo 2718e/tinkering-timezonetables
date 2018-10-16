@@ -1,15 +1,11 @@
 import * as moment from 'moment-timezone'
-import {ISplitTimezoneName} from './stores/datatypes'
-
-export function range(start: number, end:number){
-    return new Array(end-start).fill(0).map( (n,i) => start+i)
-}
+import { SplitTimezoneName} from './stores/datatypes'
 
 export function hourInZone(hourInSrcZone: number, srcZoneOffset: number, destZoneOffset: number) {
     return (hourInSrcZone - srcZoneOffset+destZoneOffset+48) % 24
 }
 
-function splitTimeZone(timeZoneName: string) : ISplitTimezoneName {
+function splitTimeZone(timeZoneName: string) : SplitTimezoneName {
     const parts = timeZoneName.split('/')
     if (parts.length == 2){
         return {
@@ -21,10 +17,12 @@ function splitTimeZone(timeZoneName: string) : ISplitTimezoneName {
     return null
 }
 
-export function getTimezoneList() : ISplitTimezoneName[] {
+export function getTimezoneList() : SplitTimezoneName[] {
     return moment.tz.names()
         .map(splitTimeZone)
         .filter(data => data !== null && data.regionName.toUpperCase() !== "ETC")
 }
+
+export function wotevToEmptyObject(wotev: any) { return {} }
 
 export const identity = x=>x
