@@ -18,10 +18,12 @@ have adopted a few naming conventions for the code, these being
 
 - prefix types representing redux actions with "A"
 - suffix Redux Container Components with "RCC"
+- to avoid confusion with the lodash library, "wotev" rather than "_" is used to denote an unused/irrelevant parameter
 
 ### Roadmap
 
 Current todos
 
-1) Allow user to choose ordering of columns and which is the base timezone
-2) Make the table prettier
+1) Remember user selections across visits (i.e. save redux state in browser cache)
+2) Allow user to choose ordering of columns and which is the base timezone
+3) Make the table prettier

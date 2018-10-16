@@ -9,7 +9,13 @@ export type ReactSelectWrapped<TWrapped> = {
     value: TWrapped;
 }
 
+export type ZoneDisplayConfig = {
+    use24hour: boolean
+    baseZone: string
+}
+
 export type TopLevelState = {
-    selectedPlaces: ReactSelectWrapped<SplitTimezoneName>[]
+    selectedPlaces: ReactSelectWrapped<SplitTimezoneName>[],
+    config: ZoneDisplayConfig
 }
 

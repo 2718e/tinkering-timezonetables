@@ -9,6 +9,7 @@ import * as range from 'lodash/range'
 
 type TimeDisplayProps = {
     places: SplitTimezoneName[]
+    timeFormat: string
 }
 
 function prepareColumns(data: SplitTimezoneName[]) {
@@ -31,20 +32,26 @@ function prepareColumns(data: SplitTimezoneName[]) {
     return columns
 }
 
-function computeHoursColumn(offsetMins, baseOffset) {
+function computeHoursColumn(offsetMins, baseOffset, timeFormat) {
     // very dirty hack for now just to test table works. need to replace this with a properly formatted time
-    return range(0, 24).map(hour => (48 + hour + (offsetMins - baseOffset) / 60) % 24)
+    return range(0, 24).map(hour => {
+        const hourInTargetZone = (48 + hour + (offsetMins - baseOffset) / 60) % 24
+        return moment({h: hourInTargetZone}).format(timeFormat)
+    })
 }
 
 export class TimeDisplay extends React.Component<TimeDisplayProps> {
 
-    private cache: { [key: number]: string[] } = {}
+
+    getTimeGridKey = (offsetMins: number, baseOffset: number) => { return offsetMins-baseOffset}
 
     computeTimeGrid = (offsetsMins: number[], baseOffset: number) => {
-        const nextCache = {};
-        offsetsMins.forEach(offsetMins => nextCache[offsetMins - baseOffset] = this.cache[offsetMins - baseOffset] || computeHoursColumn(offsetMins, baseOffset))
-        this.cache = nextCache
-        return nextCache
+        const result = {};
+        offsetsMins.forEach(offsetMins => {
+            const key = this.getTimeGridKey(offsetMins, baseOffset)
+            result[key] = computeHoursColumn(offsetMins, baseOffset, this.props.timeFormat)
+        })
+        return result
     }
 
     render() {
@@ -67,7 +74,7 @@ export class TimeDisplay extends React.Component<TimeDisplayProps> {
                     <tbody>
                         {range(0, 24).map(hour => <tr key={"hour" + hour}>
                             {columns.map(place => <td key={place.offsetMins + "hour" + hour}>
-                                {hourData[place.offsetMins-baseOffset][hour]}
+                                {hourData[this.getTimeGridKey(place.offsetMins,baseOffset)][hour]}
                             </td>
                             )}
                         </tr>
