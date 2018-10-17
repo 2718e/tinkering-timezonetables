@@ -1,15 +1,7 @@
 import { createStore } from 'redux'
 import { TopLevelState, SplitTimezoneName, ReactSelectWrapped } from './datatypes';
+import { loadState, autoSaveRedux } from './persister'
 
-function getInitialState(): TopLevelState {
-    return {
-        selectedPlaces: [],
-        config: {
-            use24hour: true,
-            baseZone: 'Pacific/Auckland'
-        }
-    }
-}
 
 function reassignKey<TObj extends Object, TKey extends keyof TObj>(old: TObj, key: TKey, next: TObj[TKey]) {
     const nextState = { ...(old as Object) } as TObj // workaround for known issue in typescript not thinking T extends Object can be object spreaded.
@@ -45,4 +37,6 @@ function topLevelReducer(state: TopLevelState, action) {
     return nextState
 }
 
-export const store = createStore(topLevelReducer, getInitialState())
+export const store = createStore(topLevelReducer, loadState())
+
+autoSaveRedux(store, 10000)
