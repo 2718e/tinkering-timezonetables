@@ -24,6 +24,6 @@ have adopted a few naming conventions for the code, these being
 
 Current todos
 
-1) Remember user selections across visits (i.e. save redux state in browser cache)
-2) Allow user to choose ordering of columns and which is the base timezone
-3) Make the table prettier
+- More styling
+- Allow user to choose date (i.e. in case of daylight savings meaning the same place changes zone)
+- Allow user to choose ordering of columns and which is the base timezone

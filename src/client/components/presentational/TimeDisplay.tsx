@@ -6,6 +6,11 @@ import * as keys from 'lodash/keys'
 import * as minBy from 'lodash/minBy'
 import * as orderBy from 'lodash/orderBy'
 import * as range from 'lodash/range'
+import Table from '@material-ui/core/Table'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import TableCell from '@material-ui/core/TableCell'
+import TableBody from '@material-ui/core/TableBody'
 
 type TimeDisplayProps = {
     places: SplitTimezoneName[]
@@ -36,14 +41,14 @@ function computeHoursColumn(offsetMins, baseOffset, timeFormat) {
     // very dirty hack for now just to test table works. need to replace this with a properly formatted time
     return range(0, 24).map(hour => {
         const hourInTargetZone = (48 + hour + (offsetMins - baseOffset) / 60) % 24
-        return moment({h: hourInTargetZone}).format(timeFormat)
+        return moment({ h: hourInTargetZone }).format(timeFormat)
     })
 }
 
 export class TimeDisplay extends React.Component<TimeDisplayProps> {
 
 
-    getTimeGridKey = (offsetMins: number, baseOffset: number) => { return offsetMins-baseOffset}
+    getTimeGridKey = (offsetMins: number, baseOffset: number) => { return offsetMins - baseOffset }
 
     computeTimeGrid = (offsetsMins: number[], baseOffset: number) => {
         const result = {};
@@ -60,28 +65,28 @@ export class TimeDisplay extends React.Component<TimeDisplayProps> {
         if (places && places.length > 0) {
             const columns = prepareColumns(places)
             const baseOffset = columns[0].offsetMins
-            const hourData = this.computeTimeGrid(columns.map(col=>col.offsetMins), baseOffset)
-            result = <>
-                <table>
-                    <thead>
-                        <tr>
-                            {columns.map(col => <th key={col.offsetMins + "head"}>
-                                <div key="utcOffset" >Utc offset {col.offsetMins/60}</div>
-                                {col.names.map(name=> <div key={name} >{name}</div>)}
-                            </th>)}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {range(0, 24).map(hour => <tr key={"hour" + hour}>
-                            {columns.map(place => <td key={place.offsetMins + "hour" + hour}>
-                                {hourData[this.getTimeGridKey(place.offsetMins,baseOffset)][hour]}
-                            </td>
-                            )}
-                        </tr>
+            const hourData = this.computeTimeGrid(columns.map(col => col.offsetMins), baseOffset)
+            result = <Table>
+                <TableHead>
+                    <TableRow key="offsetHeaders">
+                        {columns.map(col => <TableCell key={col.offsetMins + "offsethead"}>Utc offset {col.offsetMins / 60}</TableCell>)}
+                    </TableRow>
+                    <TableRow key="placeNameHeaders">
+                        {columns.map(col => <TableCell key={col.offsetMins + "placehead"}>
+                            {col.names.map(name => <div key={name} >{name}</div>)}
+                        </TableCell>)}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {range(0, 24).map(hour => <TableRow key={"hour" + hour}>
+                        {columns.map(place => <TableCell key={place.offsetMins + "hour" + hour}>
+                            {hourData[this.getTimeGridKey(place.offsetMins, baseOffset)][hour]}
+                        </TableCell>
                         )}
-                    </tbody>
-                </table>
-            </>
+                    </TableRow>
+                    )}
+                </TableBody>
+            </Table>
         } else {
             result = <div>Please select some places</div>
         }

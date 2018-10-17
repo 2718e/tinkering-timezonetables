@@ -7,6 +7,7 @@ import { PlaceSelector } from '../presentational/placeselector'
 import { TimeDisplay } from '../presentational/timedisplay'
 import { OptionsSelector } from '../presentational/OptionsSelector'
 import { getTimezoneList } from '../../helpers'
+import AppBar from '@material-ui/core/AppBar'
 
 const zones = getTimezoneList()
 
@@ -48,7 +49,7 @@ const TimeDisplayRCC = connect(
 
 export const RootRCC = () => <Provider store={store}>
     <>
-        <h2>Time Zone conversion table</h2>
+        <h2>Time Zones</h2>
         <h3>Select places</h3>
         <PlaceSelectorRCC zones={zones} />
         <h3>Options</h3>
