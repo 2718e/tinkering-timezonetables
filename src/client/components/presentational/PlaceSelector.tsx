@@ -1,5 +1,5 @@
 import Select from 'react-select'
-import { SplitTimezoneName, ReactSelectWrapped } from '../../stores/datatypes';
+import { SplitTimezoneName, ReactSelectWrapped } from '../../datatypes';
 import * as React from 'react'
 
 export interface PlaceSelectorProps {

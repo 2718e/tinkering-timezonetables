@@ -5,7 +5,7 @@
   "scripts": {
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open",
-    "build": "webpack",
+    "pack": "webpack",
     "serve": "ts-node ./src/server/server.ts"
   },
   "author": "Dan",

@@ -1,7 +1,7 @@
 // utility functions for persisting the app state (redux) between sessions
 // pretty much copied from https://medium.com/@jrcreencia/persisting-redux-state-to-local-storage-f81eb0b90e7e
 import * as throttle  from 'lodash/throttle'
-import { TopLevelState } from './datatypes'
+import { TopLevelState } from '../datatypes'
 import {Store} from 'redux'
 
 export function loadState(): TopLevelState {

@@ -1,13 +1,13 @@
 import { connect, Provider } from 'react-redux'
 import * as React from 'react'
-import {wotevToEmptyObject} from '../../helpers'
-import { TopLevelState } from '../../stores/datatypes'
-import { store, ASetSelectedPlaces, ASetUse24Hour } from '../../stores/toplevel' // may reorganize this sturucture later (i.e. put store and reducers in separate files and coordinate them here)
+import { wotevToEmptyObject } from '../../helpers'
+import { TopLevelState, SplitTimezoneName } from '../../datatypes'
+import { store } from '../../reduxstuff/stores'
+import { ASetSelectedPlaces, ASetUse24Hour, ASetBaseZone } from '../../reduxstuff/actions'
 import { PlaceSelector } from '../presentational/placeselector'
 import { TimeDisplay } from '../presentational/timedisplay'
 import { OptionsSelector } from '../presentational/OptionsSelector'
 import { getTimezoneList } from '../../helpers'
-import AppBar from '@material-ui/core/AppBar'
 
 const zones = getTimezoneList()
 
@@ -38,11 +38,21 @@ const OptionsSelectorRCC = connect(
 )(OptionsSelector)
 
 const TimeDisplayRCC = connect(
-    (state: TopLevelState) => { return { 
-        places: state.selectedPlaces.map(x=>x.value),
-        timeFormat: state.config.use24hour ? "HH:mm" : "h:mm a"
-    }},
-    wotevToEmptyObject
+    (state: TopLevelState) => {
+        return {
+            places: state.selectedPlaces.map(x => x.value),
+            timeFormat: state.config.use24hour ? "HH:mm" : "h:mm a",
+            baseZoneName: state.config.baseZone
+        }
+    },
+    dispatch => {
+        return {
+            onClickPlace: (place: SplitTimezoneName) => dispatch({
+                type: "SET_BASE_ZONE",
+                fullZoneName: place.fullZoneName
+            } as ASetBaseZone)
+        }
+    }
 )(TimeDisplay)
 
 

@@ -1,5 +1,5 @@
 import * as moment from 'moment-timezone'
-import { SplitTimezoneName} from './stores/datatypes'
+import { SplitTimezoneName} from './datatypes'
 
 export function hourInZone(hourInSrcZone: number, srcZoneOffset: number, destZoneOffset: number) {
     return (hourInSrcZone - srcZoneOffset+destZoneOffset+48) % 24

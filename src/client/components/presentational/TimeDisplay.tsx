@@ -1,11 +1,9 @@
 import * as React from 'react'
-import { SplitTimezoneName } from '../../stores/datatypes'
+import { SplitTimezoneName } from '../../datatypes'
 import * as moment from 'moment-timezone'
 import * as groupBy from 'lodash/groupBy'
-import * as keys from 'lodash/keys'
-import * as minBy from 'lodash/minBy'
-import * as orderBy from 'lodash/orderBy'
 import * as range from 'lodash/range'
+import * as keys from 'lodash/keys'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
@@ -14,26 +12,25 @@ import TableBody from '@material-ui/core/TableBody'
 
 type TimeDisplayProps = {
     places: SplitTimezoneName[]
+    baseZoneName: string
     timeFormat: string
+    onClickPlace: (placeData: SplitTimezoneName) => void
 }
 
 function prepareColumns(data: SplitTimezoneName[]) {
-    const transformed = data.map((d, i) => {
+    const augmented = data.map(d => {
         return {
-            placeName: d.placeName,
+            nameData: d,
             offsetMins: moment.tz(d.fullZoneName).utcOffset(),
-            ordinal: i
         }
     })
-    const groups = groupBy(transformed, d => d.offsetMins)
-    const columns = orderBy(keys(groups).map(k => {
-        const group = groups[k]
+    const groups = groupBy(augmented, d => d.offsetMins)
+    const columns = keys(groups).map(k=> {
         return {
-            names: group.map(item => item.placeName),
             offsetMins: k,
-            ordinal: minBy(group, item => item.ordinal)
+            nameDatas: groups[k]
         }
-    }), grp => grp.ordinal)
+    })
     return columns
 }
 
@@ -59,12 +56,20 @@ export class TimeDisplay extends React.Component<TimeDisplayProps> {
         return result
     }
 
+    makeLinkButton = (nameData: SplitTimezoneName) => {
+        return <div 
+            key={nameData.placeName} 
+            onClick={()=>this.props.onClickPlace(nameData)} >
+            {nameData.placeName}
+        </div>
+    }
+
     render() {
         const { places } = this.props
         let result;
         if (places && places.length > 0) {
             const columns = prepareColumns(places)
-            const baseOffset = columns[0].offsetMins
+            const baseOffset = moment.tz(this.props.baseZoneName).utcOffset()
             const hourData = this.computeTimeGrid(columns.map(col => col.offsetMins), baseOffset)
             result = <Table>
                 <TableHead>
@@ -72,8 +77,8 @@ export class TimeDisplay extends React.Component<TimeDisplayProps> {
                         {columns.map(col => <TableCell key={col.offsetMins + "offsethead"}>Utc offset {col.offsetMins / 60}</TableCell>)}
                     </TableRow>
                     <TableRow key="placeNameHeaders">
-                        {columns.map(col => <TableCell key={col.offsetMins + "placehead"}>
-                            {col.names.map(name => <div key={name} >{name}</div>)}
+                        {columns.map(col => <TableCell key={col.offsetMins + "placehead"} onClick={() => this.props.onClickPlace(col.nameDatas[0].nameData)}>
+                                {col.nameDatas.map(d=> <div key={d.nameData.placeName} >{d.nameData.placeName}</div>)}
                         </TableCell>)}
                     </TableRow>
                 </TableHead>
