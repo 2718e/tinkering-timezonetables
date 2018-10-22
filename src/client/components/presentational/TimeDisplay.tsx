@@ -17,49 +17,58 @@ type TimeDisplayProps = {
     onClickPlace: (placeData: SplitTimezoneName) => void
 }
 
-function prepareColumns(data: SplitTimezoneName[]) {
+type ColumnInfo = {
+    offset: string
+    sampleZoneName: string,
+    nameDatas: SplitTimezoneName[]
+}
+
+
+function prepareColumns(data: SplitTimezoneName[]): ColumnInfo[] {
     const augmented = data.map(d => {
         return {
             nameData: d,
-            offsetMins: moment.tz(d.fullZoneName).utcOffset(),
+            offset: moment.tz(d.fullZoneName).format("Z"),
         }
     })
-    const groups = groupBy(augmented, d => d.offsetMins)
-    const columns = keys(groups).map(k=> {
+    const groups = groupBy(augmented, d => d.offset)
+    const columns = keys(groups).map(k => {
+        const nameDatas = groups[k].map(item => item.nameData)
         return {
-            offsetMins: k,
-            nameDatas: groups[k]
+            offset: k,
+            sampleZoneName: nameDatas[0].fullZoneName,
+            nameDatas: nameDatas
         }
     })
     return columns
 }
 
-function computeHoursColumn(offsetMins, baseOffset, timeFormat) {
-    // very dirty hack for now just to test table works. need to replace this with a properly formatted time
+function computeHoursColumn(targetZoneName, baseZoneName, timeFormat): string[] {
     return range(0, 24).map(hour => {
-        const hourInTargetZone = (48 + hour + (offsetMins - baseOffset) / 60) % 24
-        return moment({ h: hourInTargetZone }).format(timeFormat)
+        return moment.tz({ h: hour }, baseZoneName).tz(targetZoneName).format(timeFormat)
     })
 }
+
+type TimeGrid = { [key: string]: string[] }
 
 export class TimeDisplay extends React.Component<TimeDisplayProps> {
 
 
-    getTimeGridKey = (offsetMins: number, baseOffset: number) => { return offsetMins - baseOffset }
+    getTimeGridKey = (zoneName: string) => { return moment.tz(zoneName).format("Z") }
 
-    computeTimeGrid = (offsetsMins: number[], baseOffset: number) => {
+    computeTimeGrid = (zones: string[], baseZoneName: string): TimeGrid => {
         const result = {};
-        offsetsMins.forEach(offsetMins => {
-            const key = this.getTimeGridKey(offsetMins, baseOffset)
-            result[key] = computeHoursColumn(offsetMins, baseOffset, this.props.timeFormat)
+        zones.forEach(zone => {
+            const key = this.getTimeGridKey(zone)
+            result[key] = computeHoursColumn(zone, baseZoneName, this.props.timeFormat)
         })
         return result
     }
 
     makeLinkButton = (nameData: SplitTimezoneName) => {
-        return <div 
-            key={nameData.placeName} 
-            onClick={()=>this.props.onClickPlace(nameData)} >
+        return <div
+            key={nameData.placeName}
+            onClick={() => this.props.onClickPlace(nameData)} >
             {nameData.placeName}
         </div>
     }
@@ -69,27 +78,32 @@ export class TimeDisplay extends React.Component<TimeDisplayProps> {
         let result;
         if (places && places.length > 0) {
             const columns = prepareColumns(places)
-            const baseOffset = moment.tz(this.props.baseZoneName).utcOffset()
-            const hourData = this.computeTimeGrid(columns.map(col => col.offsetMins), baseOffset)
+            const hourData = this.computeTimeGrid(columns.map(col => col.sampleZoneName), this.props.baseZoneName)
+            const offSetHeaders = columns.map(col => <TableCell key={col.offset + "offsethead"}>Utc offset {col.offset}</TableCell>)
+            const placeNameHeaders = columns.map(col => <TableCell
+                key={col.offset + "placehead"}
+                onClick={() => this.props.onClickPlace(col.nameDatas[0])}>
+                {col.nameDatas.map(d => <div key={d.placeName} >{d.placeName}</div>)}
+            </TableCell>)
+            const bodyContent = range(0, 24).map(hour => <TableRow key={"hour" + hour}>
+                {columns.map(place => <TableCell key={place.offset + "hour" + hour}>
+                    {hourData[this.getTimeGridKey(place.sampleZoneName)][hour]}
+                </TableCell>
+                )}
+            </TableRow>
+            )
+
             result = <Table>
-                <TableHead>
+                <TableHead >
                     <TableRow key="offsetHeaders">
-                        {columns.map(col => <TableCell key={col.offsetMins + "offsethead"}>Utc offset {col.offsetMins / 60}</TableCell>)}
+                        {offSetHeaders}
                     </TableRow>
                     <TableRow key="placeNameHeaders">
-                        {columns.map(col => <TableCell key={col.offsetMins + "placehead"} onClick={() => this.props.onClickPlace(col.nameDatas[0].nameData)}>
-                                {col.nameDatas.map(d=> <div key={d.nameData.placeName} >{d.nameData.placeName}</div>)}
-                        </TableCell>)}
+                        {placeNameHeaders}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {range(0, 24).map(hour => <TableRow key={"hour" + hour}>
-                        {columns.map(place => <TableCell key={place.offsetMins + "hour" + hour}>
-                            {hourData[this.getTimeGridKey(place.offsetMins, baseOffset)][hour]}
-                        </TableCell>
-                        )}
-                    </TableRow>
-                    )}
+                    {bodyContent}
                 </TableBody>
             </Table>
         } else {

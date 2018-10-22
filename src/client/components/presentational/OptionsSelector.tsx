@@ -10,6 +10,6 @@ export type OptionsSelectorProps = {
 
 export const OptionsSelector = (props: OptionsSelectorProps) =>
     <FormControlLabel control={
-    <Switch checked={props.currentConfig.use24hour}
+    <Switch color="primary" checked={props.currentConfig.use24hour}
         onChange={e => props.onToggle24Hour(e.target.checked)} />}
         label="24 hour time format"/>

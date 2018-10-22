@@ -26,4 +26,5 @@ Current todos
 
 - More styling
 - Allow user to choose date (i.e. in case of daylight savings meaning the same place changes zone)
-- Allow user to choose ordering of columns and which is the base timezone
+- Allow user to choose ordering of columns
+- investigate why warning of non unique keys from selector

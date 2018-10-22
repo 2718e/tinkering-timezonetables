@@ -1,10 +1,6 @@
 import * as moment from 'moment-timezone'
 import { SplitTimezoneName} from './datatypes'
 
-export function hourInZone(hourInSrcZone: number, srcZoneOffset: number, destZoneOffset: number) {
-    return (hourInSrcZone - srcZoneOffset+destZoneOffset+48) % 24
-}
-
 function splitTimeZone(timeZoneName: string) : SplitTimezoneName {
     const parts = timeZoneName.split('/')
     if (parts.length == 2){
