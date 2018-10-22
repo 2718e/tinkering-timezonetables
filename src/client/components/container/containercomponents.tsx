@@ -1,6 +1,5 @@
 import { connect, Provider } from 'react-redux'
 import * as React from 'react'
-import { wotevToEmptyObject } from '../../helpers'
 import { TopLevelState, SplitTimezoneName } from '../../datatypes'
 import { store } from '../../reduxstuff/stores'
 import { ASetSelectedPlaces, ASetUse24Hour, ASetBaseZone } from '../../reduxstuff/actions'
@@ -8,6 +7,7 @@ import { PlaceSelector } from '../presentational/placeselector'
 import { TimeDisplay } from '../presentational/timedisplay'
 import { OptionsSelector } from '../presentational/OptionsSelector'
 import { getTimezoneList } from '../../helpers'
+import { FootNote } from '../presentational/footer'
 
 const zones = getTimezoneList()
 
@@ -66,5 +66,6 @@ export const RootRCC = () => <Provider store={store}>
         <OptionsSelectorRCC />
         <h3>Results</h3>
         <TimeDisplayRCC />
+        <FootNote/>
     </>
 </Provider>
