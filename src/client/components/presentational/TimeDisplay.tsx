@@ -9,6 +9,19 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableBody from '@material-ui/core/TableBody'
+import { withStyles } from '@material-ui/core/styles';
+
+const CustomTableCell = withStyles(theme => ({
+    head: {
+        padding: 4,
+        minWidth: 64
+    },
+    body: {
+        padding: 4, 
+        minWidth: 64
+    }
+}))(TableCell)
+
 
 type TimeDisplayProps = {
     places: SplitTimezoneName[]
@@ -53,7 +66,6 @@ type TimeGrid = { [key: string]: string[] }
 
 export class TimeDisplay extends React.Component<TimeDisplayProps> {
 
-
     getTimeGridKey = (zoneName: string) => { return moment.tz(zoneName).format("Z") }
 
     computeTimeGrid = (zones: string[], baseZoneName: string): TimeGrid => {
@@ -79,16 +91,16 @@ export class TimeDisplay extends React.Component<TimeDisplayProps> {
         if (places && places.length > 0) {
             const columns = prepareColumns(places)
             const hourData = this.computeTimeGrid(columns.map(col => col.sampleZoneName), this.props.baseZoneName)
-            const offSetHeaders = columns.map(col => <TableCell key={col.offset + "offsethead"}>Utc offset {col.offset}</TableCell>)
-            const placeNameHeaders = columns.map(col => <TableCell
+            const offSetHeaders = columns.map(col => <CustomTableCell key={col.offset + "offsethead"}>Utc offset {col.offset}</CustomTableCell>)
+            const placeNameHeaders = columns.map(col => <CustomTableCell
                 key={col.offset + "placehead"}
                 onClick={() => this.props.onClickPlace(col.nameDatas[0])}>
                 {col.nameDatas.map(d => <div key={d.placeName} >{d.placeName}</div>)}
-            </TableCell>)
+            </CustomTableCell>)
             const bodyContent = range(0, 24).map(hour => <TableRow key={"hour" + hour}>
-                {columns.map(place => <TableCell key={place.offset + "hour" + hour}>
+                {columns.map(place => <CustomTableCell key={place.offset + "hour" + hour}>
                     {hourData[this.getTimeGridKey(place.sampleZoneName)][hour]}
-                </TableCell>
+                </CustomTableCell>
                 )}
             </TableRow>
             )
