@@ -10,7 +10,9 @@ Also want to make the app work without an internet connection (via service worke
 
 ### Status
 
-project is a work in progress and many things won't work.
+project is somewhat of a work in progress but still somewhat usable
+
+currently a deployment exists at https://optimistic-kare-227a66.netlify.com/ - this may move later
 
 ### Naming conventions
 
@@ -24,7 +26,10 @@ have adopted a few naming conventions for the code, these being
 
 Current todos
 
-- More styling
 - Allow user to choose date (i.e. in case of daylight savings meaning the same place changes zone)
 - Allow user to choose ordering of columns
+- improve responsiveness on mobile by handling touch events rather than just simulated click
+- refactor the code for the time zone display table to be more readable
 - investigate why warning of non unique keys from selector
+- More styling - in particular change table headers to indicate visually they can be clicked to set that column as the base time zone.
+
