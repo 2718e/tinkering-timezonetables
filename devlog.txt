@@ -11,3 +11,11 @@ for now just use the react select component
 need to have
 - prettier table
 - more user control over ordering (i.e. choosing what is the base zone)
+
+__________________________
+
+22:10 01-11-2018 New Zealand Standard Time (09:10 01-11-2018 Utc)
+
+Why is webpack-dev-server only looking for webpack.config.js and not for webpack.dev.js (apparently) - probably need a command switch
+
+Should the selected date actually be persisted or not? or should we just default to now each load or have a set to now button

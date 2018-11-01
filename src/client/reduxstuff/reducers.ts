@@ -1,5 +1,5 @@
 import {TopLevelState} from '../datatypes'
-import {ASetSelectedPlaces, ASetUse24Hour, ASetBaseZone} from './actions'
+import {ASetSelectedPlaces, ASetUse24Hour, ASetBaseZone, ASetBaseDate} from './actions'
 
 // function for immutable reassigning - shallow copies object excpet for the specified key
 function reassignKey<TObj extends Object, TKey extends keyof TObj>(old: TObj, key: TKey, next: TObj[TKey]) {
@@ -21,6 +21,9 @@ export function topLevelReducer(state: TopLevelState, action) {
         case "SET_BASE_ZONE":
             nextState = reassignKey(state, "config",
             reassignKey(state.config, "baseZone", (action as ASetBaseZone).fullZoneName))
+        case "SET_BASE_DATE":
+            nextState = reassignKey(state, "config",
+            reassignKey(state.config, "dateInBaseZone", (action as ASetBaseDate).dateString))
         default:
             break
     }

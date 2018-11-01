@@ -14,3 +14,8 @@ export type ASetBaseZone = {
     type: "SET_BASE_ZONE",
     fullZoneName: string
 }
+
+export type ASetBaseDate = {
+    type: "SET_BASE_DATE",
+    dateString: string
+}

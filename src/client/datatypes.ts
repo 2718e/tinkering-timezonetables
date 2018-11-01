@@ -12,6 +12,7 @@ export type ReactSelectWrapped<TWrapped> = {
 export type ZoneDisplayConfig = {
     use24hour: boolean
     baseZone: string
+    dateInBaseZone: string
 }
 
 export type TopLevelState = {

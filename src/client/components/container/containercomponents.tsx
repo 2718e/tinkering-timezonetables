@@ -2,7 +2,7 @@ import { connect, Provider } from 'react-redux'
 import * as React from 'react'
 import { TopLevelState, SplitTimezoneName } from '../../datatypes'
 import { store } from '../../reduxstuff/stores'
-import { ASetSelectedPlaces, ASetUse24Hour, ASetBaseZone } from '../../reduxstuff/actions'
+import { ASetSelectedPlaces, ASetUse24Hour, ASetBaseZone, ASetBaseDate } from '../../reduxstuff/actions'
 import { PlaceSelector } from '../presentational/placeselector'
 import { TimeDisplay } from '../presentational/timedisplay'
 import { OptionsSelector } from '../presentational/OptionsSelector'
@@ -32,7 +32,11 @@ const OptionsSelectorRCC = connect(
             onToggle24Hour: (use24Hour) => dispatch({
                 type: "SET_USE_24_HOUR",
                 use24Hour: use24Hour
-            } as ASetUse24Hour)
+            } as ASetUse24Hour),
+            onChangeDate: (nextDateString) => dispatch({
+                type: "SET_BASE_DATE",
+                dateString: nextDateString
+            } as ASetBaseDate)
         }
     }
 )(OptionsSelector)
