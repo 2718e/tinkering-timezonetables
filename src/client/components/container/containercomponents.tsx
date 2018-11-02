@@ -3,12 +3,11 @@ import * as React from 'react'
 import { TopLevelState, SplitTimezoneName } from '../../datatypes'
 import { store } from '../../reduxstuff/stores'
 import { ASetSelectedPlaces, ASetUse24Hour, ASetBaseZone, ASetBaseDate } from '../../reduxstuff/actions'
-import { PlaceSelector } from '../presentational/placeselector'
-import { TimeDisplay } from '../presentational/timedisplay'
+import { PlaceSelector } from '../presentational/PlaceSelector'
+import { TimeDisplay } from '../presentational/TimeDisplay'
 import { OptionsSelector } from '../presentational/OptionsSelector'
 import { getTimezoneList } from '../../helpers'
 import { FootNote } from '../presentational/footer'
-import { stat } from 'fs';
 
 const zones = getTimezoneList()
 
