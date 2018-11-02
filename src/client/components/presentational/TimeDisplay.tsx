@@ -77,7 +77,6 @@ export const ColorKey = () => <div key="colorcodes">
 // main render function
 export const TimeDisplay = (props: TimeDisplayProps) => {
     const { places, baseZoneName, timeFormat, dateInBaseZone } = props
-    console.log(dateInBaseZone)
     let result;
     if (places && places.length > 0) {
         const columns = prepareColumns(places)
