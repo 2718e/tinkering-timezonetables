@@ -14,6 +14,7 @@ type TimeDisplayProps = {
 
 // styles
 const cellStyle = css({ padding: 4, minWidth: 64, minHeight: 24 })
+const tableStyle= css({fontSize: 12, fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`})
 
 const offsetStyle = css({
     color: 'grey'
@@ -59,7 +60,7 @@ const makeTableBody = (hourData: TimeGrid, columns: ColumnInfo[]) => {
 }
 
 export const ColorKey = () => <div key="colorcodes">
-    <table key="colorcode">
+    <table key="colorcode" className={tableStyle}>
         <tbody>
             <tr>
                 <td>Yesterday:</td>
@@ -85,7 +86,7 @@ export const TimeDisplay = (props: TimeDisplayProps) => {
         const placeNameHeaders = getPlaceNameHeaders(props, columns)
         const bodyContent = makeTableBody(hourData, columns)
         result = <>
-            <table key="results">
+            <table key="results" className={tableStyle}>
                 <thead>
                     <tr key="offsetHeaders">{offSetHeaders}</tr>
                     <tr key="placeNameHeaders">{placeNameHeaders}</tr>
