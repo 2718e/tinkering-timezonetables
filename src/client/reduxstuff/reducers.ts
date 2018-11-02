@@ -21,9 +21,11 @@ export function topLevelReducer(state: TopLevelState, action) {
         case "SET_BASE_ZONE":
             nextState = reassignKey(state, "config",
             reassignKey(state.config, "baseZone", (action as ASetBaseZone).fullZoneName))
+            break
         case "SET_BASE_DATE":
             nextState = reassignKey(state, "config",
             reassignKey(state.config, "dateInBaseZone", (action as ASetBaseDate).dateString))
+            break
         default:
             break
     }
