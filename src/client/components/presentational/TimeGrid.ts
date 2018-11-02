@@ -10,7 +10,18 @@ export type ColumnInfo = {
   nameDatas: SplitTimezoneName[]
 }
 
-export type TimeGrid = { [key: string]: string[] }
+export enum RelativeDay {
+  YESTERDAY,
+  TODAY,
+  TOMORROW
+}
+
+export type TimeWithDayDiff = {
+  time: string,
+  dayDiff: RelativeDay
+}
+
+export type TimeGrid = { [key: string]: TimeWithDayDiff[] }
 
 export function prepareColumns(data: SplitTimezoneName[]): ColumnInfo[] {
   const augmented = data.map(d => {
@@ -34,17 +45,42 @@ export function prepareColumns(data: SplitTimezoneName[]): ColumnInfo[] {
 export function getTimeGridKey(zoneName: string){ return moment.tz(zoneName).format("Z") }
 
 //
-export function computeTimeGrid(zones: string[], baseZoneName: string, timeFormat: string): TimeGrid {
+export function computeTimeGrid(zones: string[], baseZoneName: string, timeFormat: string, atDateString: string): TimeGrid {
   const result = {};
+  const baseDate = moment(atDateString)
   zones.forEach(zone => {
     const key = this.getTimeGridKey(zone)
-    result[key] = computeHoursColumn(zone, baseZoneName, timeFormat)
+    result[key] = computeHoursColumn(zone, baseZoneName, timeFormat, atDateString)
   })
   return result
 }
 
-function computeHoursColumn(targetZoneName, baseZoneName, timeFormat): string[] {
+function computeHoursColumn(targetZoneName: string, baseZoneName: string, timeFormat: string, atDateString: string): TimeWithDayDiff[] {
   return range(0, 24).map(hour => {
-    return moment.tz({ h: hour }, baseZoneName).tz(targetZoneName).format(timeFormat)
+    const baseMoment = moment.tz(atDateString, baseZoneName)
+    baseMoment.hour(hour)
+    const zoneMoment = baseMoment.clone().tz(targetZoneName)
+    return ({
+      time: zoneMoment.format(timeFormat),
+      dayDiff: dayDiff(baseMoment, zoneMoment)})
   })
+}
+
+// returns -1 if the day in target zone is less than the day in the base zone,
+// 1 if it is greater, 0 otherwise
+function dayDiff(baseMoment, zoneMoment) : RelativeDay {
+  const baseYear = baseMoment.year()
+  const zoneYear = zoneMoment.year()
+  const baseDay = baseMoment.dayOfYear()
+  const zoneDay = zoneMoment.dayOfYear()
+  if (baseYear > zoneYear){
+    return RelativeDay.YESTERDAY
+  } else if (baseYear < zoneYear){
+    return RelativeDay.TOMORROW
+  } else if (baseDay > zoneDay) {
+    return RelativeDay.YESTERDAY
+  } else if (baseDay < zoneDay) {
+    return RelativeDay.TOMORROW
+  }
+  return RelativeDay.TODAY
 }

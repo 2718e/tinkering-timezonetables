@@ -1,18 +1,19 @@
 import * as React from 'react'
 import { SplitTimezoneName } from '../../datatypes'
-import {ColumnInfo, TimeGrid, prepareColumns, computeTimeGrid, getTimeGridKey} from './TimeGrid'
+import { ColumnInfo, TimeGrid, prepareColumns, computeTimeGrid, getTimeGridKey, RelativeDay } from './TimeGrid'
 import * as range from 'lodash/range'
 import { css } from 'emotion'
 
 type TimeDisplayProps = {
     places: SplitTimezoneName[]
     baseZoneName: string
+    dateInBaseZone: string
     timeFormat: string
     onClickPlace: (placeData: SplitTimezoneName) => void
 }
 
 // styles
-const cellStyle = css({padding: 4, minWidth: 64, minHeight:24})
+const cellStyle = css({ padding: 4, minWidth: 64, minHeight: 24 })
 
 const offsetStyle = css({
     color: 'grey'
@@ -21,10 +22,14 @@ const offsetStyle = css({
 const headerStyle = css({
     cursor: 'pointer',
     color: 'blue',
-    ':hover' : {textDecoration: 'underline'}
-},cellStyle)
+    ':hover': { textDecoration: 'underline' }
+}, cellStyle)
 
-const hourStyle = css({},cellStyle)
+let hourStyles = {}
+
+hourStyles[RelativeDay.YESTERDAY] = css({ backgroundColor: 'lightblue' }, cellStyle)
+hourStyles[RelativeDay.TODAY] = cellStyle
+hourStyles[RelativeDay.TOMORROW] = css({ backgroundColor: 'orange' }, cellStyle)
 
 const getOffsetHeaders = (columns: ColumnInfo[]) => {
     return columns.map(col => <td className={offsetStyle} key={col.offset + "offsethead"}>Utc offset {col.offset}</td>)
@@ -42,39 +47,57 @@ const getPlaceNameHeaders = (props: TimeDisplayProps, columns: ColumnInfo[]) => 
 
 const makeTableBody = (hourData: TimeGrid, columns: ColumnInfo[]) => {
     return range(0, 24).map(hour => <tr key={"hour" + hour}>
-        {columns.map(place => <td className={hourStyle}  key={place.offset + "hour" + hour}>
-            {hourData[getTimeGridKey(place.sampleZoneName)][hour]}
-        </td>
-        )}
+        {columns.map(place => {
+            const hourDatum = hourData[getTimeGridKey(place.sampleZoneName)][hour]
+            const cssClass = hourStyles[hourDatum.dayDiff]
+            return <td className={cssClass} key={place.offset + "hour" + hour} >
+                {hourDatum.time}
+            </td>
+        })}
     </tr>
     )
 }
 
+export const ColorKey = () => <div key="colorcodes">
+    <table key="colorcode">
+        <tbody>
+            <tr>
+                <td>Yesterday:</td>
+                <td className={hourStyles[RelativeDay.YESTERDAY]}></td>
+            </tr>
+            <tr>
+                <td>Tomorrow:</td>
+                <td className={hourStyles[RelativeDay.TOMORROW]}></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-
-
+// main render function
 export const TimeDisplay = (props: TimeDisplayProps) => {
-    const { places, baseZoneName, timeFormat } = props
+    const { places, baseZoneName, timeFormat, dateInBaseZone } = props
+    console.log(dateInBaseZone)
     let result;
     if (places && places.length > 0) {
         const columns = prepareColumns(places)
-        const hourData = computeTimeGrid(columns.map(col => col.sampleZoneName), baseZoneName, timeFormat)
+        const hourData = computeTimeGrid(columns.map(col => col.sampleZoneName), baseZoneName, timeFormat, dateInBaseZone)
         const offSetHeaders = getOffsetHeaders(columns)
         const placeNameHeaders = getPlaceNameHeaders(props, columns)
         const bodyContent = makeTableBody(hourData, columns)
-        result = <table>
-            <thead>
-                <tr key="offsetHeaders">{offSetHeaders}</tr>
-                <tr key="placeNameHeaders">{placeNameHeaders}</tr>
-            </thead>
-            <tbody>
-                {bodyContent}
-            </tbody>
-        </table>
+        result = <>
+            <table key="results">
+                <thead>
+                    <tr key="offsetHeaders">{offSetHeaders}</tr>
+                    <tr key="placeNameHeaders">{placeNameHeaders}</tr>
+                </thead>
+                <tbody>
+                    {bodyContent}
+                </tbody>
+            </table>
+            <ColorKey />
+        </>
     } else {
         result = <div>Please select some places</div>
     }
     return result
 }
-
-

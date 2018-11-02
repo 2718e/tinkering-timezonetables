@@ -8,6 +8,7 @@ import { TimeDisplay } from '../presentational/timedisplay'
 import { OptionsSelector } from '../presentational/OptionsSelector'
 import { getTimezoneList } from '../../helpers'
 import { FootNote } from '../presentational/footer'
+import { stat } from 'fs';
 
 const zones = getTimezoneList()
 
@@ -46,7 +47,8 @@ const TimeDisplayRCC = connect(
         return {
             places: state.selectedPlaces.map(x => x.value),
             timeFormat: state.config.use24hour ? "HH:mm" : "h:mm a",
-            baseZoneName: state.config.baseZone
+            baseZoneName: state.config.baseZone,
+            dateInBaseZone: state.config.dateInBaseZone
         }
     },
     dispatch => {
