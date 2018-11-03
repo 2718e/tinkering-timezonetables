@@ -26,10 +26,7 @@ have adopted a few naming conventions for the code, these being
 
 Current todos
 
-- Allow user to choose date (i.e. in case of daylight savings meaning the same place changes zone)
 - Allow user to choose ordering of columns
 - improve responsiveness on mobile by handling touch events rather than just simulated click
-- refactor the code for the time zone display table to be more readable
-- investigate why warning of non unique keys from selector
-- More styling - in particular change table headers to indicate visually they can be clicked to set that column as the base time zone.
-
+- investigate why warning of non unique keys from selector, ref on pure functional component from datepicker.
+- Consider making a manifest file so can be installed as an app on mobiles
