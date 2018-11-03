@@ -3,18 +3,20 @@ import { SplitTimezoneName } from '../../datatypes'
 import { ColumnInfo, TimeGrid, prepareColumns, computeTimeGrid, getTimeGridKey, RelativeDay } from './TimeGrid'
 import * as range from 'lodash/range'
 import { css } from 'emotion'
+import { DATE_FORMAT } from '../../helpers'
+import * as moment from 'moment-timezone'
 
 type TimeDisplayProps = {
     places: SplitTimezoneName[]
     baseZoneName: string
-    dateInBaseZone: string
+    dateStringBaseZone: string
     timeFormat: string
     onClickPlace: (placeData: SplitTimezoneName) => void
 }
 
 // styles
 const cellStyle = css({ padding: 4, minWidth: 64, minHeight: 24 })
-const tableStyle= css({fontSize: 12, fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`})
+const tableStyle = css({ fontSize: 12, fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif` })
 
 const offsetStyle = css({
     color: 'grey'
@@ -59,28 +61,33 @@ const makeTableBody = (hourData: TimeGrid, columns: ColumnInfo[]) => {
     )
 }
 
-export const ColorKey = () => <div key="colorcodes">
-    <table key="colorcode" className={tableStyle}>
-        <tbody>
-            <tr>
-                <td>Yesterday:</td>
-                <td className={hourStyles[RelativeDay.YESTERDAY]}></td>
-            </tr>
-            <tr>
-                <td>Tomorrow:</td>
-                <td className={hourStyles[RelativeDay.TOMORROW]}></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
 
+type ColorKeyProps = { dateStringBaseZone: string }
+export const ColorKey = (props: ColorKeyProps) => {
+    const yesterday = moment(props.dateStringBaseZone).add(-1, 'days').format(DATE_FORMAT)
+    const tommorow = moment(props.dateStringBaseZone).add(1, 'days').format(DATE_FORMAT)
+    return <div key="colorcodes">
+        <table key="colorcode" className={tableStyle}>
+            <tbody>
+                <tr>
+                    <td>Previous Day ({yesterday}): </td>
+                    <td className={hourStyles[RelativeDay.YESTERDAY]}></td>
+                </tr>
+                <tr>
+                    <td>Next Day ({tommorow}): </td>
+                    <td className={hourStyles[RelativeDay.TOMORROW]}></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
 // main render function
 export const TimeDisplay = (props: TimeDisplayProps) => {
-    const { places, baseZoneName, timeFormat, dateInBaseZone } = props
+    const { places, baseZoneName, timeFormat, dateStringBaseZone } = props
     let result;
     if (places && places.length > 0) {
         const columns = prepareColumns(places)
-        const hourData = computeTimeGrid(columns.map(col => col.sampleZoneName), baseZoneName, timeFormat, dateInBaseZone)
+        const hourData = computeTimeGrid(columns.map(col => col.sampleZoneName), baseZoneName, timeFormat, dateStringBaseZone)
         const offSetHeaders = getOffsetHeaders(columns)
         const placeNameHeaders = getPlaceNameHeaders(props, columns)
         const bodyContent = makeTableBody(hourData, columns)
@@ -94,7 +101,7 @@ export const TimeDisplay = (props: TimeDisplayProps) => {
                     {bodyContent}
                 </tbody>
             </table>
-            <ColorKey />
+            <ColorKey dateStringBaseZone={dateStringBaseZone} />
         </>
     } else {
         result = <div>Please select some places</div>

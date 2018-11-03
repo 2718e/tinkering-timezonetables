@@ -47,7 +47,7 @@ const TimeDisplayRCC = connect(
             places: state.selectedPlaces.map(x => x.value),
             timeFormat: state.config.use24hour ? "HH:mm" : "h:mm a",
             baseZoneName: state.config.baseZone,
-            dateInBaseZone: state.config.dateInBaseZone
+            dateStringBaseZone: state.config.dateInBaseZone
         }
     },
     dispatch => {

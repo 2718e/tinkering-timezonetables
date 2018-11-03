@@ -38,6 +38,7 @@ export const OptionsSelector = (props: OptionsSelectorProps) =>
             <DatePicker
                 customInput={<CustomDatePickerInput />} 
                 selected={moment(props.currentConfig.dateInBaseZone, DATE_FORMAT)}
+                dateFormat={DATE_FORMAT}
                 onChange={props.onChangeDate} />
         } label="Convert at date?" />
         </div>

@@ -59,6 +59,7 @@ function computeHoursColumn(targetZoneName: string, baseZoneName: string, timeFo
   return range(0, 24).map(hour => {
     const baseMoment = moment.tz(atDateString, baseZoneName)
     baseMoment.hour(hour)
+    baseMoment.minute(0)
     const zoneMoment = baseMoment.clone().tz(targetZoneName)
     return ({
       time: zoneMoment.format(timeFormat),
@@ -66,8 +67,6 @@ function computeHoursColumn(targetZoneName: string, baseZoneName: string, timeFo
   })
 }
 
-// returns -1 if the day in target zone is less than the day in the base zone,
-// 1 if it is greater, 0 otherwise
 function dayDiff(baseMoment, zoneMoment) : RelativeDay {
   const baseYear = baseMoment.year()
   const zoneYear = zoneMoment.year()

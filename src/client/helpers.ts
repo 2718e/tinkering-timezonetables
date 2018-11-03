@@ -21,6 +21,6 @@ export function getTimezoneList() : SplitTimezoneName[] {
 
 export function wotevToEmptyObject(wotev: any) { return {} }
 
-export const DATE_FORMAT = 'YYYY/MM/DD'
+export const DATE_FORMAT = 'YYYY-MM-DD'
 
 export const identity = x=>x
