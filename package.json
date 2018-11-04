@@ -20,7 +20,7 @@
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
     "react": "^16.5.2",
-    "react-datepicker": "^1.7.0",
+    "react-dates": "^18.2.0",
     "react-dom": "^16.5.2",
     "react-emotion": "^9.2.12",
     "react-redux": "^5.0.7",
