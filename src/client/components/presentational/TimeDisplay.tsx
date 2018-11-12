@@ -5,6 +5,7 @@ import * as range from 'lodash/range'
 import { css } from 'emotion'
 import { DATE_FORMAT } from '../../helpers'
 import * as moment from 'moment-timezone'
+import { tapOrClick } from '../../taporclick'
 
 type TimeDisplayProps = {
     places: SplitTimezoneName[]
@@ -43,7 +44,7 @@ const getPlaceNameHeaders = (props: TimeDisplayProps, columns: ColumnInfo[]) => 
     return columns.map(col => <td
         className={headerStyle}
         key={col.offset + "placehead"}
-        onClick={() => props.onClickPlace(col.nameDatas[0])}>
+        {...tapOrClick(() => props.onClickPlace(col.nameDatas[0]))}>
         {col.nameDatas.map(d => <div key={d.placeName} >{d.placeName}</div>)}
     </td>)
 }
