@@ -2,7 +2,8 @@ import * as moment from 'moment-timezone'
 import * as groupBy from 'lodash/groupBy'
 import * as range from 'lodash/range'
 import * as keys from 'lodash/keys'
-import { SplitTimezoneName } from '../../datatypes'
+import { SplitTimezoneName } from '../../persistence/datatypes'
+import { splitTimeZone } from '../../helpers';
 
 export type ColumnInfo = {
   offset: string
@@ -23,7 +24,8 @@ export type TimeWithDayDiff = {
 
 export type TimeGrid = { [key: string]: TimeWithDayDiff[] }
 
-export function prepareColumns(data: SplitTimezoneName[]): ColumnInfo[] {
+export function prepareColumns(zones: string[]): ColumnInfo[] {
+  const data = zones.map(splitTimeZone)
   const augmented = data.map(d => {
     return {
       nameData: d,
@@ -47,7 +49,6 @@ export function getTimeGridKey(zoneName: string){ return moment.tz(zoneName).for
 //
 export function computeTimeGrid(zones: string[], baseZoneName: string, timeFormat: string, atDateString: string): TimeGrid {
   const result = {};
-  const baseDate = moment(atDateString)
   zones.forEach(zone => {
     const key = this.getTimeGridKey(zone)
     result[key] = computeHoursColumn(zone, baseZoneName, timeFormat, atDateString)

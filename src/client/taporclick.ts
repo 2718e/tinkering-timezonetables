@@ -10,7 +10,7 @@ type MouseOrTouchEvent = React.MouseEvent<any> | React.TouchEvent<any>
  * - the given handler will be called on TouchEnd immediately (i.e. without waiting for the simulated click event and introducing poor responsiveness)
  * - the given handler will be called on a click event if no TouchEnd is received, but not be called twice if both Touchend and a simulated click are received, 
  * furthermore, this property will hold even if the handler for the touch event calls the render function (and hence this function) again 
- * -If the user swipes to scroll while touching the element instead of tapping it, the handler won't be called at all
+ * - If the user swipes to scroll while touching the element instead of tapping it, the handler won't be called at all
  * 
  * Note that because of the implementation, long touches also may not be responded to
  * 

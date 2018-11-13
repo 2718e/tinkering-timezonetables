@@ -1,15 +1,15 @@
 import { connect, Provider } from 'react-redux'
 import * as React from 'react'
-import { TopLevelState, SplitTimezoneName } from '../../datatypes'
+import { TopLevelState, SplitTimezoneName } from '../../persistence/datatypes'
 import { store } from '../../reduxstuff/stores'
 import { ASetSelectedPlaces, ASetUse24Hour, ASetBaseZone, ASetBaseDate } from '../../reduxstuff/actions'
 import { PlaceSelector } from '../presentational/PlaceSelector'
 import { TimeDisplay } from '../presentational/TimeDisplay'
 import { OptionsSelector } from '../presentational/OptionsSelector'
-import { getTimezoneList } from '../../helpers'
+import * as moment from 'moment-timezone'
 import { FootNote } from '../presentational/footer'
 
-const zones = getTimezoneList()
+const zones = moment.tz.names()
 
 const PlaceSelectorRCC = connect(
     (state: TopLevelState) => {
@@ -44,7 +44,7 @@ const OptionsSelectorRCC = connect(
 const TimeDisplayRCC = connect(
     (state: TopLevelState) => {
         return {
-            places: state.selectedPlaces.map(x => x.value),
+            zones: state.selectedPlaces.map(x => x.value),
             timeFormat: state.config.use24hour ? "HH:mm" : "h:mm a",
             baseZoneName: state.config.baseZone,
             dateStringBaseZone: state.config.dateInBaseZone

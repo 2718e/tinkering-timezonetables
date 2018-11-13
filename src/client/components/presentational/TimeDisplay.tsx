@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SplitTimezoneName } from '../../datatypes'
+import { SplitTimezoneName } from '../../persistence/datatypes'
 import { ColumnInfo, TimeGrid, prepareColumns, computeTimeGrid, getTimeGridKey, RelativeDay } from './TimeGrid'
 import * as range from 'lodash/range'
 import { css } from 'emotion'
@@ -8,7 +8,7 @@ import * as moment from 'moment-timezone'
 import { tapOrClick } from '../../taporclick'
 
 type TimeDisplayProps = {
-    places: SplitTimezoneName[]
+    zones: string[]
     baseZoneName: string
     dateStringBaseZone: string
     timeFormat: string
@@ -84,10 +84,10 @@ export const ColorKey = (props: ColorKeyProps) => {
 }
 // main render function
 export const TimeDisplay = (props: TimeDisplayProps) => {
-    const { places, baseZoneName, timeFormat, dateStringBaseZone } = props
+    const { zones, baseZoneName, timeFormat, dateStringBaseZone } = props
     let result;
-    if (places && places.length > 0) {
-        const columns = prepareColumns(places)
+    if (zones && zones.length > 0) {
+        const columns = prepareColumns(zones)
         const hourData = computeTimeGrid(columns.map(col => col.sampleZoneName), baseZoneName, timeFormat, dateStringBaseZone)
         const offSetHeaders = getOffsetHeaders(columns)
         const placeNameHeaders = getPlaceNameHeaders(props, columns)

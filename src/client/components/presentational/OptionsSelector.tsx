@@ -1,6 +1,6 @@
-import { ZoneDisplayConfig } from '../../datatypes';
+import { ZoneDisplayConfig } from '../../persistence/datatypes'
 import * as React from 'react'
-import Switch from '@material-ui/core/Switch';
+import Switch from '@material-ui/core/Switch'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import * as moment from 'moment-timezone'
 import { DATE_FORMAT } from '../../helpers'

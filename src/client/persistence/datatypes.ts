@@ -4,7 +4,7 @@ export type SplitTimezoneName = {
     fullZoneName: string;
 }
 
-export type ReactSelectWrapped<TWrapped> = {
+export type NamedValue<TWrapped> = {
     name: string;
     value: TWrapped;
 }
@@ -16,7 +16,8 @@ export type ZoneDisplayConfig = {
 }
 
 export type TopLevelState = {
-    selectedPlaces: ReactSelectWrapped<SplitTimezoneName>[],
+    version: 1,
+    selectedPlaces: NamedValue<string>[],
     config: ZoneDisplayConfig
 }
 

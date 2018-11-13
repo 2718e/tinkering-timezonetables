@@ -19,3 +19,15 @@ __________________________
 Why is webpack-dev-server only looking for webpack.config.js and not for webpack.dev.js (apparently) - probably need a command switch
 
 Should the selected date actually be persisted or not? or should we just default to now each load or have a set to now button
+
+____________________________
+
+09:19 13-11-2018 New Zealand Standard Time (20:19 12-11-2018 Utc)
+
+Looking more closely bug with keys in react select may be to do with 
+
+If persisting local storage, what about migrating / schema change
+
+Since there is not a lot of user data being saved is this even necessary
+- could still get bugs if a missing key though
+- so need a way to detect if the data is out of date even if just want to throw it away and not migrate...

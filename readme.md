@@ -27,6 +27,6 @@ have adopted a few naming conventions for the code, these being
 Current todos
 
 - Allow user to choose ordering of columns
-- improve responsiveness on mobile by handling touch events rather than just simulated click
-- investigate why warning of non unique keys from selector, ref on pure functional component from datepicker.
+- improve responsiveness on mobile by handling touch events rather than just simulated click (on more controls)
 - Consider making a manifest file so can be installed as an app on mobiles
+- Find data for more places.

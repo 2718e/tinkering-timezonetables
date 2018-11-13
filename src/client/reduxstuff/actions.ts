@@ -1,8 +1,8 @@
-import { SplitTimezoneName, ReactSelectWrapped } from '../datatypes';
+import { SplitTimezoneName, NamedValue } from '../persistence/datatypes';
 
 export type ASetSelectedPlaces = {
     type: "SET_SELECTED_PLACES";
-    selection: ReactSelectWrapped<SplitTimezoneName>[]
+    selection: NamedValue<string>[]
 }
 
 export type ASetUse24Hour = {

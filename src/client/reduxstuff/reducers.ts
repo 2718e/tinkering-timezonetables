@@ -1,4 +1,4 @@
-import {TopLevelState} from '../datatypes'
+import {TopLevelState} from '../persistence/datatypes'
 import {ASetSelectedPlaces, ASetUse24Hour, ASetBaseZone, ASetBaseDate} from './actions'
 
 // function for immutable reassigning - shallow copies object excpet for the specified key

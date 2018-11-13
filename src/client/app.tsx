@@ -1,6 +1,5 @@
 import * as React from 'react' // need to import * as React rather than import React otherwise parcel renames it - which then breaks when the jsx is transformed assuming the name is React
 import * as ReactDOM from 'react-dom'
-import { getTimezoneList, identity } from './helpers'
 import { RootRCC } from './components/container/containercomponents'
 
 if ('serviceWorker' in navigator) {
