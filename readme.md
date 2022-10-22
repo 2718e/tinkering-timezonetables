@@ -1,5 +1,8 @@
 ## Time zone Tables
 
+(Originally a toy project made because wanted to see how offline web apps worked, 
+abandoned for years now considering trying to at least update it enough to resolve security warnings)
+
 Goal of this project is to create a small web app that provides an easy way to answer the question
 
 "When it is time T in location X, what time will it be in location Y"
@@ -10,23 +13,10 @@ Also want to make the app work without an internet connection (via service worke
 
 ### Status
 
-project is somewhat of a work in progress but still somewhat usable
-
-currently a deployment exists at https://optimistic-kare-227a66.netlify.com/ - this may move later
-
-### Naming conventions
-
-have adopted a few naming conventions for the code, these being
-
-- prefix types representing redux actions with "A"
-- suffix Redux Container Components with "RCC"
-- to avoid confusion with the lodash library, "wotev" rather than "_" is used to denote an unused/irrelevant parameter
+project shouldn't be used until security alerts can be fixed, taken down deployments
 
 ### Roadmap
 
 Current todos
 
-- Allow user to choose ordering of columns
-- improve responsiveness on mobile by handling touch events rather than just simulated click (on more controls)
-- Consider making a manifest file so can be installed as an app on mobiles
-- Find data for more places.
+- update packages (if possible) to resolve dependabot alerts.
